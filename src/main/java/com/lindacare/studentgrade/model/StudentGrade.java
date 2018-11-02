@@ -1,12 +1,9 @@
 package com.lindacare.studentgrade.model;
 
-import java.sql.Date;
-
+import java.sql.Timestamp;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -16,43 +13,38 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class StudentGrade {
 	
-	/* {"studentIdCard": "X23498589F", "subjectCode": "BIO2", "gradeCode": "A", "graduationYear":
-2005, "timePlaced": "24-OCT-18 10:27:44", "originatingState" : "NY", "university" : "NYU"}*/
+	public StudentGrade(StudentGradeKey key, @NotNull @Size(max = 1) String gradeCode, @NotNull Long graduationYear,
+			@NotNull Timestamp timePlaced, @NotNull @Size(min = 2, max = 2) String originatingState) {
+		super();
+		this.key = key;
+		this.gradeCode = gradeCode;
+		this.graduationYear = graduationYear;
+		this.timePlaced = timePlaced;
+		this.originatingState = originatingState;
+	}
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private String studentIdCard;
+	public StudentGrade() {
+	}
 	
-	@NotBlank
-    @Size(min = 4, max = 4)
-	private String subjectCode;
-	@NotBlank
-    @Size(min = 1, max = 1)	
+	@EmbeddedId
+	private StudentGradeKey key;	
+	
+	@NotNull
+    @Size(max = 1)	
 	private String gradeCode;
-	@NotBlank
+	
+	@NotNull
 	private Long graduationYear;
-	@NotBlank
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "DD-MMM-YY HH:MM:SS")
-	private Date timePlaced;
-	@NotBlank
+	
+	@NotNull
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MMM-yy HH:mm:ss") 
+	private Timestamp timePlaced;
+	
+	@NotNull
 	@Size(min = 2, max = 2)
 	private String originatingState;
-	@NotBlank
-	@Size(min = 1)
-	private String university;
 	
-	public String getStudentIdCard() {
-		return studentIdCard;
-	}
-	public void setStudentIdCard(String studentIdCard) {
-		this.studentIdCard = studentIdCard;
-	}
-	public String getSubjectCode() {
-		return subjectCode;
-	}
-	public void setSubjectCode(String subjectCode) {
-		this.subjectCode = subjectCode;
-	}
+	
 	public String getGradeCode() {
 		return gradeCode;
 	}
@@ -71,16 +63,16 @@ public class StudentGrade {
 	public void setOriginatingState(String originatingState) {
 		this.originatingState = originatingState;
 	}
-	public String getUniversity() {
-		return university;
-	}
-	public void setUniversity(String university) {
-		this.university = university;
-	}
-	public Date getTimePlaced() {
+	public Timestamp getTimePlaced() {
 		return timePlaced;
 	}
-	public void setTimePlaced(Date timePlaced) {
+	public void setTimePlaced(Timestamp timePlaced) {
 		this.timePlaced = timePlaced;
+	}
+	public StudentGradeKey getKey() {
+		return key;
+	}
+	public void setKey(StudentGradeKey key) {
+		this.key = key;
 	}
 }
