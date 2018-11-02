@@ -1,93 +1,86 @@
 package com.lindacare.studentgrade.model;
 
+import java.sql.Date;
 
-// @Entity
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class StudentGrade {
-	// @Id
-	// @GeneratedValue(strategy = GenerationType.AUTO)
-	Long id;
-	String name;
-	String description;
-	String condition;
-	Integer depth;
-	Double latitude;
-	Double longitude;
-	Integer yearDiscovered;
-
-	public StudentGrade() { }
-
-	public StudentGrade(Long id, String name, String description, String condition, Integer depth, Double latitude, Double longitude, Integer yearDiscovered) {
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.condition = condition;
-		this.depth = depth;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.yearDiscovered = yearDiscovered;
+	
+	/* {"studentIdCard": "X23498589F", "subjectCode": "BIO2", "gradeCode": "A", "graduationYear":
+2005, "timePlaced": "24-OCT-18 10:27:44", "originatingState" : "NY", "university" : "NYU"}*/
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private String studentIdCard;
+	
+	@NotBlank
+    @Size(min = 4, max = 4)
+	private String subjectCode;
+	@NotBlank
+    @Size(min = 1, max = 1)	
+	private String gradeCode;
+	@NotBlank
+	private Long graduationYear;
+	@NotBlank
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "DD-MMM-YY HH:MM:SS")
+	private Date timePlaced;
+	@NotBlank
+	@Size(min = 2, max = 2)
+	private String originatingState;
+	@NotBlank
+	@Size(min = 1)
+	private String university;
+	
+	public String getStudentIdCard() {
+		return studentIdCard;
 	}
-
-	public Long getId() {
-		return id;
+	public void setStudentIdCard(String studentIdCard) {
+		this.studentIdCard = studentIdCard;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
+	public String getSubjectCode() {
+		return subjectCode;
 	}
-
-	public String getName() {
-		return name;
+	public void setSubjectCode(String subjectCode) {
+		this.subjectCode = subjectCode;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public String getGradeCode() {
+		return gradeCode;
 	}
-
-	public String getDescription() {
-		return description;
+	public void setGradeCode(String gradeCode) {
+		this.gradeCode = gradeCode;
 	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public Long getGraduationYear() {
+		return graduationYear;
 	}
-
-	public String getCondition() {
-		return condition;
+	public void setGraduationYear(Long graduationYear) {
+		this.graduationYear = graduationYear;
 	}
-
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public String getOriginatingState() {
+		return originatingState;
 	}
-
-	public Integer getDepth() {
-		return depth;
+	public void setOriginatingState(String originatingState) {
+		this.originatingState = originatingState;
 	}
-
-	public void setDepth(Integer depth) {
-		this.depth = depth;
+	public String getUniversity() {
+		return university;
 	}
-
-	public Double getLatitude() {
-		return latitude;
+	public void setUniversity(String university) {
+		this.university = university;
 	}
-
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
+	public Date getTimePlaced() {
+		return timePlaced;
 	}
-
-	public Double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(Double longitude) {
-		this.longitude = longitude;
-	}
-
-	public Integer getYearDiscovered() {
-		return yearDiscovered;
-	}
-
-	public void setYearDiscovered(Integer yearDiscovered) {
-		this.yearDiscovered = yearDiscovered;
+	public void setTimePlaced(Date timePlaced) {
+		this.timePlaced = timePlaced;
 	}
 }
