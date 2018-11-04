@@ -13,10 +13,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class StudentGrade {
 	
-	public StudentGrade(StudentGradeKey key, @NotNull @Size(max = 1) String gradeCode, @NotNull Long graduationYear,
+	public StudentGrade(@NotNull String studentIdCard, @NotNull @Size(min = 4, max = 4) String subjectCode,
+			@NotNull @Size(min = 1) String university, @NotNull @Size(max = 1) String gradeCode, @NotNull Long graduationYear,
 			@NotNull Timestamp timePlaced, @NotNull @Size(min = 2, max = 2) String originatingState) {
 		super();
-		this.key = key;
+		this.key = new StudentGradeKey(studentIdCard,subjectCode,university);
 		this.gradeCode = gradeCode;
 		this.graduationYear = graduationYear;
 		this.timePlaced = timePlaced;
@@ -69,10 +70,26 @@ public class StudentGrade {
 	public void setTimePlaced(Timestamp timePlaced) {
 		this.timePlaced = timePlaced;
 	}
-	public StudentGradeKey getKey() {
-		return key;
+	
+	public String getStudentIdCard() {
+		return (key!=null?key.getStudentIdCard():null);
 	}
-	public void setKey(StudentGradeKey key) {
-		this.key = key;
+	public void setStudentIdCard(String studentIdCard) {
+		if (key!=null)
+			key.setStudentIdCard(studentIdCard);
+	}
+	public String getSubjectCode() {
+		return (key!=null?key.getSubjectCode():null);
+	}
+	public void setSubjectCode(String subjectCode) {
+		if (key!=null)
+			key.setSubjectCode(subjectCode);
+	}
+	public String getUniversity() {
+		return (key!=null?key.getUniversity():null);
+	}
+	public void setUniversity(String university) {
+		if (key!=null)
+			key.setUniversity(university);
 	}
 }
