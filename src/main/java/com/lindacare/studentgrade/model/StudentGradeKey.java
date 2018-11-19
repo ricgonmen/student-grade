@@ -1,35 +1,37 @@
 package com.lindacare.studentgrade.model;
 
 import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Embeddable
 public class StudentGradeKey implements Serializable {
 	
-	private static final long serialVersionUID = 6633761191166943852L;
-
-
-	public StudentGradeKey(@NotNull String studentIdCard, @NotNull @Size(min = 4, max = 4) String subjectCode,
-			@NotNull @Size(min = 1) String university) {
+	public StudentGradeKey(String studentIdCard, SubjectCode subjectCode, University university) {
 		super();
 		this.studentIdCard = studentIdCard;
 		this.subjectCode = subjectCode;
 		this.university = university;
 	}
+
+	private static final long serialVersionUID = 6633761191166943852L;
 	
 	public StudentGradeKey() {
 	}
 
-	@NotNull
+	@Column(nullable = false)
 	private String studentIdCard;	
-	@NotNull
-    @Size(min = 4, max = 4)
-	private String subjectCode;
-	@NotNull
-	@Size(min = 1)
-	private String university;
+	@Enumerated(EnumType.STRING)
+	@Column(length=4, nullable = false)
+	private SubjectCode subjectCode;
+	@Enumerated(EnumType.STRING)
+	@Column(length=3, nullable = false)
+	private University university;
 		
 	
 	public String getStudentIdCard() {
@@ -38,19 +40,7 @@ public class StudentGradeKey implements Serializable {
 	public void setStudentIdCard(String studentIdCard) {
 		this.studentIdCard = studentIdCard;
 	}
-	public String getSubjectCode() {
-		return subjectCode;
-	}
-	public void setSubjectCode(String subjectCode) {
-		this.subjectCode = subjectCode;
-	}
-	public String getUniversity() {
-		return university;
-	}
-	public void setUniversity(String university) {
-		this.university = university;
-	}
-	
+		
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,4 +63,16 @@ public class StudentGradeKey implements Serializable {
         result = 31 * result + university.hashCode();
         return result;
     }
+	public SubjectCode getSubjectCode() {
+		return subjectCode;
+	}
+	public void setSubjectCode(SubjectCode subjectCode) {
+		this.subjectCode = subjectCode;
+	}
+	public University getUniversity() {
+		return university;
+	}
+	public void setUniversity(University university) {
+		this.university = university;
+	}
 }

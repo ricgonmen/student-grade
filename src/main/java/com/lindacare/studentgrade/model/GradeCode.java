@@ -1,34 +1,46 @@
 package com.lindacare.studentgrade.model;
-/* http://www.discoverabroad.com/us/LivingAbroad/Education/GradingSystemInTheUS.htm 
-  	Grade	GPA		Undergraduate 	Graduate 
-	A 		4.0 	Excellent		Excellent
-	B		3.0		Good			Good/Average
-	C		2.0		Average			Passing
-	D		1.0		Passing			Failing
-	F		0.0		Failing			Failing
-*/
+// http://www.discoverabroad.com/us/LivingAbroad/Education/GradingSystemInTheUS.htm 
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class GradeCode {
-	String grade;
-	Double GPA;
-	String undergraduate;
-	String graduate;
+	@Id
+	@Column(length=1)
+	private char code;
+	@NotNull
+	private Double GPA;
+	@NotNull
+	private String undergraduate;
+	@NotNull
+	private String graduate;
+	
+	/*
+	@OneToMany(mappedBy = "gradeCode", cascade = CascadeType.ALL)    
+    @JsonIgnore
+    private Set<StudentGrade> studentGrades;
+    */ 
 
 	public GradeCode() { }
 
-	public GradeCode(String grade, Double GPA, String undergraduate, String graduate) {
-		this.grade = grade;
+	public GradeCode(char code, Double GPA, String undergraduate, String graduate) {
+		this.code = code;
 		this.GPA = GPA;
 		this.undergraduate = undergraduate;
 		this.graduate = graduate;
 	}
 
-	public String getGrade() {
-		return grade;
+	public char getCode() {
+		return code;
 	}
 
-	public void setGrade(String grade) {
-		this.grade = grade;
+	public void setCode(char code) {
+		this.code = code;
 	}
 
 	public Double getGPA() {

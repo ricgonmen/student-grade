@@ -1,10 +1,15 @@
 package com.lindacare.studentgrade.model;
 
 import java.sql.Timestamp;
+
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,82 +18,81 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class StudentGrade {
 	
-	public StudentGrade(@NotNull String studentIdCard, @NotNull @Size(min = 4, max = 4) String subjectCode,
-			@NotNull @Size(min = 1) String university, @NotNull @Size(max = 1) String gradeCode, @NotNull Long graduationYear,
-			@NotNull Timestamp timePlaced, @NotNull @Size(min = 2, max = 2) String originatingState) {
-		super();
-		this.key = new StudentGradeKey(studentIdCard,subjectCode,university);
-		this.gradeCode = gradeCode;
-		this.graduationYear = graduationYear;
-		this.timePlaced = timePlaced;
-		this.originatingState = originatingState;
-	}
+	@ManyToOne
+	@JoinColumn(name = "grade_code", foreignKey = @ForeignKey(name = "fk_grade_code"))
+	private GradeCode gradeCode;
 	
-	public StudentGrade() {
-	}
+	@Column(nullable = false)
+	private Integer graduationYear;
 	
 	@EmbeddedId
 	private StudentGradeKey key;	
 	
-	@NotNull
-    @Size(max = 1)	
-	private String gradeCode;
+	@Enumerated(EnumType.STRING)
+	@Column(length=2, nullable = false)
+	private OriginatingState originatingState;
 	
-	@NotNull
-	private Long graduationYear;
-	
-	@NotNull
+	@Column(nullable = false)
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd-MMM-yy HH:mm:ss") 
 	private Timestamp timePlaced;
 	
-	@NotNull
-	@Size(min = 2, max = 2)
-	private String originatingState;
-	
-	
-	public String getGradeCode() {
-		return gradeCode;
+	public StudentGrade() {
 	}
-	public void setGradeCode(String gradeCode) {
+		
+	public StudentGrade(StudentGradeKey key, GradeCode gradeCode, Integer graduationYear, Timestamp timePlaced,
+			OriginatingState originatingState) {
+		super();
+		this.key = key;
 		this.gradeCode = gradeCode;
+		this.graduationYear = graduationYear;
+		this.timePlaced = timePlaced;
+		this.originatingState = originatingState;
 	}
-	public Long getGraduationYear() {
+	
+	
+	public char getGradeCode() {
+		return (gradeCode!=null?gradeCode.getCode():null);
+	}
+	public Integer getGraduationYear() {
 		return graduationYear;
 	}
-	public void setGraduationYear(Long graduationYear) {
-		this.graduationYear = graduationYear;
-	}
-	public String getOriginatingState() {
+	public OriginatingState getOriginatingState() {
 		return originatingState;
 	}
-	public void setOriginatingState(String originatingState) {
-		this.originatingState = originatingState;
+	public String getStudentIdCard() {
+		return (key!=null?key.getStudentIdCard():null);
+	}
+	public SubjectCode getSubjectCode() {
+		return (key!=null?key.getSubjectCode():null);
 	}
 	public Timestamp getTimePlaced() {
 		return timePlaced;
 	}
-	public void setTimePlaced(Timestamp timePlaced) {
-		this.timePlaced = timePlaced;
+	public University getUniversity() {
+		return (key!=null?key.getUniversity():null);
 	}
-	
-	public String getStudentIdCard() {
-		return (key!=null?key.getStudentIdCard():null);
+	public void setGradeCode(char code) {
+		if (gradeCode!=null)
+			gradeCode.setCode(code);
+	}	
+	public void setGraduationYear(Integer graduationYear) {
+		this.graduationYear = graduationYear;
+	}
+	public void setOriginatingState(OriginatingState originatingState) {
+		this.originatingState = originatingState;
 	}
 	public void setStudentIdCard(String studentIdCard) {
 		if (key!=null)
 			key.setStudentIdCard(studentIdCard);
 	}
-	public String getSubjectCode() {
-		return (key!=null?key.getSubjectCode():null);
-	}
-	public void setSubjectCode(String subjectCode) {
+	public void setSubjectCode(SubjectCode subjectCode) {
 		if (key!=null)
 			key.setSubjectCode(subjectCode);
 	}
-	public String getUniversity() {
-		return (key!=null?key.getUniversity():null);
+	public void setTimePlaced(Timestamp timePlaced) {
+		this.timePlaced = timePlaced;
 	}
-	public void setUniversity(String university) {
+	public void setUniversity(University university) {
 		if (key!=null)
 			key.setUniversity(university);
 	}
